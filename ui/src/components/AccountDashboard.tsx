@@ -1,7 +1,7 @@
-import React, { useState } from "react"
-import {account} from "../Types/Account"
-import Paper from "@mui/material/Paper/Paper";
 import { Button, Card, CardContent, Grid, TextField } from "@mui/material";
+import Paper from "@mui/material/Paper/Paper";
+import { useState } from "react";
+import { account } from "../Types/Account";
 
 type AccountDashboardProps = {
   account: account;
@@ -22,6 +22,12 @@ export const AccountDashboard = (props: AccountDashboardProps) => {
       body: JSON.stringify({amount: depositAmount})
     }
     const response = await fetch(`http://localhost:3000/transactions/${account.accountNumber}/deposit`, requestOptions);
+    if (response.status === 400) {
+      const json = await response.json();
+      alert(json.error);
+      return;
+    }
+
     const data = await response.json();
     setAccount({
       accountNumber: data.account_number,
@@ -39,6 +45,12 @@ export const AccountDashboard = (props: AccountDashboardProps) => {
       body: JSON.stringify({amount: withdrawAmount})
     }
     const response = await fetch(`http://localhost:3000/transactions/${account.accountNumber}/withdraw`, requestOptions);
+    if (response.status === 400) {
+      const json = await response.json();
+      alert(json.error);
+      return;
+    }
+
     const data = await response.json();
     setAccount({
       accountNumber: data.account_number,

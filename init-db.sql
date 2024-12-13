@@ -8,6 +8,15 @@ CREATE TABLE accounts (
     credit_limit INTEGER
 );
 
+DROP TABLE IF EXISTS withdrawals;
+CREATE TABLE withdrawals (
+    transaction_id SERIAL PRIMARY KEY,
+    account_number INTEGER NOT NULL,
+    amount INTEGER NOT NULL,
+    date TIMESTAMP NOT NULL,
+    FOREIGN KEY (account_number) REFERENCES accounts(account_number)
+);
+
 ALTER TABLE accounts ADD CONSTRAINT verify_type
 CHECK (type IN ('checking', 'savings', 'credit'));
 
